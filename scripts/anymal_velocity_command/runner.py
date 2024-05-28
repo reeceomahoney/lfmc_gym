@@ -72,7 +72,7 @@ def main():
 
     saver = ConfigurationSaver(log_dir=home_path + "/data/" + task_name,
                                save_items=[task_path + "/cfg.yaml", task_path + "/Environment.hpp"])
-    tensorboard_launcher(saver.data_dir)  # press refresh (F5) after the first ppo update
+    # tensorboard_launcher(saver.data_dir)  # press refresh (F5) after the first ppo update
 
     # Discount factor
     rl_gamma = np.exp(cfg['environment']['control_dt'] * np.log(0.5) / cfg['algorithm']['gamma_half_life_duration'])
@@ -163,9 +163,10 @@ def main():
                 ppo.actor_critic_module.reset()
 
         # actual training
+        action = np.zeros((env.num_envs, env.num_acts), dtype=np.float32)
         for step in range(n_steps):
             obs = env.observe()
-            action = ppo.act(obs)
+            prev_action = ppo.act(obs)
             reward, dones = env.step(action)
             ppo.step(rews=reward, dones=dones)
             done_sum = done_sum + np.sum(dones)
@@ -173,6 +174,8 @@ def main():
 
             # Store the rewards for this step
             reward_logger.step()
+
+            action = prev_action.copy()
 
         # take st step to get value obs
         obs = env.observe()

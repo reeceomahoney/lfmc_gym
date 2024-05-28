@@ -2,8 +2,8 @@ seed: 1
 record_video: True    # Is considered False if <environment.render> = False below
 
 environment:
-  render: True
-  num_envs: 240
+  render: False  # Crashes when this is on
+  num_envs: 1000
   eval_every_n: 1000
   save_every_n: 50
   num_threads: 'auto'
@@ -18,10 +18,13 @@ environment:
 
   use_actuator_network: True
 
+  server:
+    port: 8080
+
   velocity_command:
-    limit_heading_velocity: 1.0
-    limit_lateral_velocity: 0.75
-    limit_yaw_rate: 1.25
+    limit_heading_velocity: 0.5
+    limit_lateral_velocity: 0.3
+    limit_yaw_rate: 0.3
 
     # Less than this is considered to be a zero velocity command
     limit_velocity_magnitude: 0.1

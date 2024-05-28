@@ -8,6 +8,7 @@ import torch
 import argparse
 import random
 import numpy as np
+from tqdm import tqdm
 
 import modules
 
@@ -38,6 +39,7 @@ cfg = YAML().load(open(task_path + "/cfg.yaml", 'r'))
 cfg['environment']['num_envs'] = 1
 cfg['environment']['render'] = True
 cfg['environment']['enable_dynamics_randomization'] = False
+cfg['environment']['server']['port'] = 8081
 
 env = VecEnv(
     anymal_velocity_command.RaisimGymEnv(home_path + "/resources", dump(cfg['environment'], Dumper=RoundTripDumper)),
@@ -107,29 +109,48 @@ else:
 
     max_steps = 1000
 
-    for step in range(max_steps):
+    obs_mean, obs_var = env.mean, env.var
+    num_envs = cfg['environment']['num_envs']
+    expert_data = {"observations": np.zeros((num_envs, max_steps, 36)),
+                "actions": np.zeros((num_envs, max_steps, 12)),
+                "terminals": np.zeros((num_envs, max_steps, 1))}
+    tot_terminals = 0
+    action_mean = np.array([-0.205, 1.464, -1.849,
+        0.205, 1.464, -1.849,
+        -0.205, -1.464, 1.849,
+        0.205, -1.464, 1.849])
+
+    action_ll = np.zeros((num_envs, 12), dtype=np.float32)
+    for step in tqdm(range(max_steps)):
         with torch.no_grad():
             time.sleep(cfg['environment']['control_dt'])
             obs = env.observe(False)
+            obs_unnorm = (obs*np.sqrt(obs_var) + obs_mean)[:, :36]
+            base_pos = env.get_base_position()
+            orientation = env.get_base_orientation()
 
-            action_ll = actor_critic_module.generate_action(torch.from_numpy(obs).cpu())
-            reward_ll, dones = env.step(action_ll.cpu().detach().numpy())
+            prev_action_ll = actor_critic_module.generate_action(torch.from_numpy(obs).cpu())
+            reward_ll, dones = env.step(action_ll)
 
             actor_critic_module.update_dones(dones)
             reward_ll_sum = reward_ll_sum + reward_ll[0]
 
-            if dones or step == max_steps - 1:
-                print('----------------------------------------------------')
-                print('{:<40} {:>6}'.format("average ll reward: ",
-                                            '{:0.10f}'.format(reward_ll_sum / (step + 1 - start_step_id))))
-                print(
-                    '{:<40} {:>6}'.format("time elapsed [sec]: ", '{:6.4f}'.format((step + 1 - start_step_id) * 0.01)))
-                print('----------------------------------------------------\n')
-                start_step_id = step + 1
-                reward_ll_sum = 0.0
+            expert_data["observations"][:, step, :2] = base_pos[:, :2]
+            expert_data["observations"][:, step, 2:6] = orientation
+            expert_data["observations"][:, step, 6:36] = obs_unnorm[:, 3:33]
+            expert_data["actions"][:, step, :] = prev_action_ll.cpu().detach().numpy() + action_mean
+            expert_data["terminals"][:, step, :] = dones.reshape(-1, 1)
 
-                actor_critic_module.reset()
+            if dones.any():
+                tot_terminals += sum(dones)
+            
+            action_ll = prev_action_ll.cpu().detach().numpy()
 
     env.turn_off_visualization()
     env.reset()
+
+    np.save("expert_data.npy", expert_data, allow_pickle=True)
+    print(expert_data["observations"].shape)
+    print("Total terminals: ", tot_terminals)
+
     print("Finished at the maximum visualization steps")

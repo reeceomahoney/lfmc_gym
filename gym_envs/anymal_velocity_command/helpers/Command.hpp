@@ -73,6 +73,10 @@ public:
             updateVelocityForGoal(robotRotation);
         }
 
+        // if (stepsUntilNextSample_ <= 75) {
+        //     velocityCommand_.setZero();
+        // }
+
     }
 
     void reset(const Eigen::Matrix3d &robotRotation) {
@@ -155,8 +159,9 @@ private:
         robotHeadingAngle_ = std::atan2(robotRotation.col(0)[1], robotRotation.col(0)[0]);
         headingAngleOffset_ = std::atan2(std::sin(desiredHeadingAngle_ - robotHeadingAngle_),
                                          std::cos(desiredHeadingAngle_ - robotHeadingAngle_));
-        velocityCommand_[0] = std::cos(headingAngleOffset_);
-        velocityCommand_[1] = std::sin(headingAngleOffset_);
+        velocityCommand_[0] = std::cos(headingAngleOffset_) * velocityCommandLimits_[0];
+        velocityCommand_[1] = std::sin(headingAngleOffset_) * velocityCommandLimits_[1];
+        velocityCommand_[2] = headingAngleOffset_ * velocityCommandLimits_[2];
     }
 
     void validateProbabilities() {
