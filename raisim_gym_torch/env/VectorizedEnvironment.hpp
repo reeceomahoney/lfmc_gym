@@ -214,6 +214,16 @@ namespace raisim {
 
         const std::vector<bool> &getConditionalResetFlags() { return conditionalResetPerformed_; }
 
+        void getBasePosition(Eigen::Ref<EigenRowMajorMat> &pos) {
+            for (int i = 0; i < num_envs_; i++)
+                environments_[i]->getBasePosition(pos.row(i));
+        }
+
+        void getBaseOrientation(Eigen::Ref<EigenRowMajorMat> &rot) {
+            for (int i = 0; i < num_envs_; i++)
+                environments_[i]->getBaseOrientation(rot.row(i));
+        }
+
     private:
         void updateObservationStatisticsAndNormalize(Eigen::Ref<EigenRowMajorMat> &ob, bool updateStatistics) {
             if (updateStatistics) {
@@ -254,6 +264,9 @@ namespace raisim {
             } else {
                 done[agentId] = false;
             }
+            // } else {
+            //     conditionalReset();
+            //     done[agentId] = conditionalResetPerformed_[agentId];
         }
 
         std::vector<ChildEnvironment *> environments_;

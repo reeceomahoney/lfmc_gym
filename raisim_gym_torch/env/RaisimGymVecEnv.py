@@ -22,12 +22,15 @@ class RaisimGymVecEnv:
         self.actions = np.zeros([self.num_envs, self.num_acts], dtype=np.float32)
         self.log_prob = np.zeros(self.num_envs, dtype=np.float32)
         self._reward = np.zeros(self.num_envs, dtype=np.float32)
-        self._done = np.zeros(self.num_envs, dtype=np.bool)
+        self._done = np.zeros(self.num_envs, dtype=bool)
         self.rewards = [[] for _ in range(self.num_envs)]
         self.wrapper.setSeed(seed)
         self.count = 0.0
         self.mean = np.zeros(self.num_obs, dtype=np.float32)
         self.var = np.zeros(self.num_obs, dtype=np.float32)
+
+        self.base_position = np.zeros([self.num_envs, 3], dtype=np.float32)
+        self.base_orientation = np.zeros([self.num_envs, 4], dtype=np.float32)
 
     def seed(self, seed=None):
         self.wrapper.setSeed(seed)
@@ -92,6 +95,15 @@ class RaisimGymVecEnv:
 
     def set_max_episode_length(self, time_in_seconds):
         self.wrapper.setMaxEpisodeLength(time_in_seconds)
+    
+    def get_base_position(self):
+        self.wrapper.getBasePosition(self.base_position)
+        return self.base_position
+
+    def get_base_orientation(self):
+        base_orientation = np.zeros([self.num_envs, 4], dtype=np.float32)
+        self.wrapper.getBaseOrientation(base_orientation)
+        return base_orientation
 
     @property
     def num_envs(self):

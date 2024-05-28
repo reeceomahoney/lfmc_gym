@@ -39,7 +39,7 @@ namespace raisim {
             setSimulationTimeStep(cfg["simulation_dt"].template As<double>());
 
             /// add objects
-            robot_ = world_->addArticulatedSystem(resourceDir_ + "/models/anymal_c/urdf/model.urdf");
+            robot_ = world_->addArticulatedSystem(resourceDir_ + "/models/anymal_d/urdf/anymal_d.urdf");
             robot_->setName("anymal_c");
             robot_->setControlMode(raisim::ControlMode::PD_PLUS_FEEDFORWARD_TORQUE);
 
@@ -113,7 +113,7 @@ namespace raisim {
                     world_->getMaterialPairProperties("ground_material", "foot_material");
             world_->setMaterialPairProp(
                     "ground_material", "foot_material",
-                    0.4, materialPairGroundFootProperties.c_r,
+                    0.6, materialPairGroundFootProperties.c_r,
                     materialPairGroundFootProperties.r_th
             );
 
@@ -134,7 +134,7 @@ namespace raisim {
             /// visualize if it is the first environment
             if (visualizable_) {
                 server_ = std::make_unique<raisim::RaisimServer>(world_.get());
-                server_->launchServer();
+                server_->launchServer(cfg["server"]["port"].template As<int>());
                 server_->focusOn(robot_);
                 visualizationHandler_.setServer(server_);
             }
@@ -319,6 +319,14 @@ namespace raisim {
         void turnOffVisualization() final {
             server_->hibernate();
             visualizing_ = false;
+        }
+
+        void getBasePosition(Eigen::Ref<EigenVec> basePos) {
+            basePos = robot_->getBasePosition().e().cast<float>();
+        }
+
+        void getBaseOrientation(Eigen::Ref<EigenVec> baseOrientation) {
+            baseOrientation = observationHandler_.getGeneralizedCoordinate().segment(3, 4).cast<float>();
         }
 
     private:

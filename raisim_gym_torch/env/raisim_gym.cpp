@@ -45,6 +45,8 @@ PYBIND11_MODULE(RAISIM_GYM_TORCH_ENV_NAME, m) {
             .def("disableEarlyTermination", &VectorizedEnvironment<ENVIRONMENT>::disableEarlyTermination)
             .def("enableEarlyTermination", &VectorizedEnvironment<ENVIRONMENT>::enableEarlyTermination)
             .def("setMaxEpisodeLength", &VectorizedEnvironment<ENVIRONMENT>::setMaxEpisodeLength)
+            .def("getBasePosition", &VectorizedEnvironment<ENVIRONMENT>::getBasePosition)
+            .def("getBaseOrientation", &VectorizedEnvironment<ENVIRONMENT>::getBaseOrientation)
             .def(py::pickle(
                     [](const VectorizedEnvironment<ENVIRONMENT> &p) { // __getstate__ --> Pickling to Python
                         /* Return a tuple that fully encodes the state of the object */
