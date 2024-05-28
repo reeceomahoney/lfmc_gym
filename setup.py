@@ -80,7 +80,7 @@ setup(
     description='Training repository for low-frequency motion control policies.',
     long_description='',
     ext_modules=[CMakeExtension('_lfmc_gym')],
-    install_requires=['ruamel.yaml', 'numpy', 'torch', 'tensorboard>=1.15', 'pillow', 'psutil'],
+    install_requires=['ruamel.yaml', 'numpy', 'tensorboard>=1.15', 'pillow', 'psutil'],
     cmdclass=dict(build_ext=CMakeBuild),
     include_package_data=True,
     zip_safe=False,

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(_lfmc_gym)
 set(CMAKE_CXX_STANDARD 17)
 
-list(APPEND CMAKE_PREFIX_PATH "$ENV{LOCAL_INSTALL}")
+list(APPEND CMAKE_PREFIX_PATH "$ENV{RAISIM_LIB}/raisim/linux")
 
 ########################
 ### Helper Functions ###

@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+torch = "*"
+"ruamel.yaml" = "==0.17"
+tensorboard = "*"
+pillow = "*"
+psutil = "*"
+tqdm = "*"
+matplotlib = "*"
+protobuf = "==4.25"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
