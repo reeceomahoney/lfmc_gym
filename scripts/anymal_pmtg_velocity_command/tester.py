@@ -183,7 +183,7 @@ else:
     env.reset()
     print("Finished at the maximum visualization steps")
 
-    name = "rand"
+    name = "expert_data"
     np.save("expert_data/" + name + ".npy", expert_data)
     print(expert_data["observations"].shape)
     print("Number of terminals: ", tot_terminals)

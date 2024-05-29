@@ -9,7 +9,7 @@ environment:
   num_threads: 'auto'
   simulation_dt: 0.005
   control_dt: 0.04
-  max_time: 30.0
+  max_time: 10.0
   log_interval: 8
   enable_dynamics_randomization: True
   episode_length_for_dynamics_learning: 2.0
@@ -21,9 +21,9 @@ environment:
     port: 8080
 
   velocity_command:
-    limit_heading_velocity: 0.5
-    limit_lateral_velocity: 0.3
-    limit_yaw_rate: 0.3
+    limit_heading_velocity: 1.0
+    limit_lateral_velocity: 0.75
+    limit_yaw_rate: 1.25
     # limit_heading_velocity: 0.6
     # limit_lateral_velocity: 0.3
     # limit_yaw_rate: 0.3
@@ -38,16 +38,16 @@ environment:
     limit_velocity_magnitude: 0.1
 
     # These values are rescaled if their sum is not equal to 1
-    probability_zero_command: 0.2
+    probability_zero_command: 0.1
     probability_heading_command: 0.0
     probability_lateral_command: 0.0
     probability_yaw_command: 0.0
-    probability_direction_command: 0.0
-    probability_constant_command: 0.8   # includes all three velocities
+    probability_direction_command: 0.9
+    probability_constant_command: 0.0   # includes all three velocities
 
     # Time range in seconds when the next command is sampled
-    command_sampling_time_min: 6.0
-    command_sampling_time_max: 8.0
+    command_sampling_time_min: 10.0
+    command_sampling_time_max: 10.0
 
   reward:
     base_orientation:
