@@ -2,7 +2,6 @@ from ruamel.yaml import YAML, dump, RoundTripDumper
 from raisim_gym_torch.env.bin import anymal_pmtg_velocity_command
 from raisim_gym_torch.env.RaisimGymVecEnv import RaisimGymVecEnv as VecEnv
 import os
-from copy import deepcopy
 import math
 import time
 import torch
@@ -141,24 +140,23 @@ else:
         "observations": np.zeros((num_envs, max_steps, 36)),
         "actions": np.zeros((num_envs, max_steps, 12)),
         "terminals": np.zeros((num_envs, max_steps, 1)),
+        "vel_cmds": np.zeros((num_envs, max_steps, 3)),
     }
     tot_terminals = 0
 
-    obs = env.observe(False).copy()
     action_ll = np.zeros((num_envs, 12), dtype=np.float32)
     for step in tqdm(range(max_steps)):
         with torch.no_grad():
             time.sleep(cfg["environment"]["control_dt"])
-            obs = deepcopy(env.observe(False))
+            obs = env.observe(False).copy()
+            obs_unnorm = (obs * np.sqrt(obs_var) + obs_mean)[:, :36]
             base_pos = env.get_base_position()
             orientation = env.get_base_orientation()
 
             prev_action_ll = actor_critic_module.generate_action(torch.from_numpy(obs).cpu())
             reward_ll, dones = env.step(action_ll)
-            obs_new = deepcopy(env.observe(False))
+            obs_new = env.observe(False).copy()
 
-            # record data
-            obs_unnorm = (obs * np.sqrt(obs_var) + obs_mean)[:, :36]
             # get action from obs_new
             obs_new_unnorm = (obs_new * np.sqrt(obs_var) + obs_mean)[:, :48]
             action = obs_new_unnorm[:, 36:48] + obs_new_unnorm[:, 3:15]
@@ -168,6 +166,7 @@ else:
             expert_data["observations"][:, step, 6:36] = obs_unnorm[:, 3:33]
             expert_data["actions"][:, step] = action
             expert_data["terminals"][:, step] = dones.reshape(-1, 1)
+            expert_data["vel_cmds"][:, step] = obs_unnorm[:, 33:36]
 
             actor_critic_module.update_dones(dones)
             reward_ll_sum = reward_ll_sum + reward_ll[0]
