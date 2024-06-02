@@ -86,9 +86,14 @@ public:
             updateVelocityForGoal(robotRotation);
         }
 
-        if (stepsUntilNextSample_ <= 100) {
-            velocityCommand_.setZero();
-        }
+        // if ((stepsUntilNextSample_ <= 100) && (stepsUntilNextSample_ > 25)) {
+        //     double scale = (stepsUntilNextSample_ - 25) / 75.;
+        //     velocityCommand_ = velocityCommand_ * scale;
+        // }
+
+        // if (stepsUntilNextSample_ <= 25) {
+        //     velocityCommand_.setZero();
+        // }
     }
 
     void reset(const Eigen::Matrix3d &robotRotation) {
