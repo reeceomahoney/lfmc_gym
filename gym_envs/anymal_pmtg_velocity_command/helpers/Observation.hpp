@@ -39,8 +39,8 @@ public:
 
         feetNominalPositions_.setZero(12);
         feetNominalPositions_ << 0.308, 0.227, -0.59,
-            -0.308, 0.227, -0.59,
             0.308, -0.227, -0.59,
+            -0.308, 0.227, -0.59,
             -0.308, -0.227, -0.59;
                 
 

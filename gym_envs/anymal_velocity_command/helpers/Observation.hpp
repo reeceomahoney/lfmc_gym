@@ -38,8 +38,8 @@ public:
 
         feetNominalPositions_.setZero(12);
         feetNominalPositions_ << 0.295, 0.235, -0.41,
-                -0.295, 0.235, -0.41,
                 0.295, -0.235, -0.41,
+                -0.295, 0.235, -0.41,
                 -0.295, -0.235, -0.41;
 
         generalizedCoordinate_.setZero(19);
