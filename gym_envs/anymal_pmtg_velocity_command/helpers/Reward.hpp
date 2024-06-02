@@ -51,8 +51,8 @@ public:
         desiredJointPosition_.setZero(12);
         desiredJointPosition_ << -0.14, 0.81, -0.96,
             0.14, 0.81, -0.96,
-            -0.14, 0.81, -0.96,
-            0.14, 0.81, -0.96;
+            -0.14, -0.81, 0.96,
+            0.14, -0.81, 0.96;
 
         jointVelocity_.setZero(12);
         prevJointVelocity_.setZero(12);
@@ -265,8 +265,8 @@ public:
         action_.setZero();
         desiredJointPosition_ << -0.14, 0.81, -0.96,
             0.14, 0.81, -0.96,
-            -0.14, 0.81, -0.96,
-            0.14, 0.81, -0.96;
+            -0.14, -0.81, 0.96,
+            0.14, -0.81, 0.96;
         feetStanceDuration_.fill(0.f);
 
         prevJointVelocity_.setZero();

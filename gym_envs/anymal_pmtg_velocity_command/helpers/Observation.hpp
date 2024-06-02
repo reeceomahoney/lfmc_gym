@@ -34,8 +34,8 @@ public:
         jointNominalConfig_.setZero(nJoints_);
         jointNominalConfig_ << -0.14, 0.81, -0.96,
             0.14, 0.81, -0.96,
-            -0.14, 0.81, -0.96,
-            0.14, 0.81, -0.96;
+            -0.14, -0.81, 0.96,
+            0.14, -0.81, 0.96;
 
         feetNominalPositions_.setZero(12);
         feetNominalPositions_ << 0.308, 0.227, -0.59,
