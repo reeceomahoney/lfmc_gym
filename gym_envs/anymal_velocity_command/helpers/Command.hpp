@@ -73,7 +73,7 @@ public:
             updateVelocityForGoal(robotRotation);
         }
 
-        // if (stepsUntilNextSample_ <= 75) {
+        // if (stepsUntilNextSample_ <= 50) {
         //     velocityCommand_.setZero();
         // }
 

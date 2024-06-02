@@ -47,10 +47,10 @@ public:
         feetFrames_[3] = "RH_shank_fixed_RH_FOOT";
 
         desiredJointPosition_.setZero(12);
-        desiredJointPosition_ << -0.089, 0.712, -1.03,
-                0.089, 0.712, -1.03,
-                -0.089, -0.712, 1.03,
-                0.089, -0.712, 1.03;
+        desiredJointPosition_ << -0.20, 1.39, -1.70,
+                0.20, 1.39, -1.70,
+                -0.20, -1.39, 1.70,
+                0.20, -1.39, 1.70;
 
         jointVelocity_.setZero(12);
         prevJointVelocity_.setZero(12);
@@ -68,13 +68,13 @@ public:
 
         // Base linear velocity
         r_baseLinearTrackingVelocity_ +=
-                1.f - static_cast<float>(tanh(4. * (observationHandler.getBaseLinearVelocity().col(0).head(2) -
+                1.f - static_cast<float>(tanh(8. * (observationHandler.getBaseLinearVelocity().col(0).head(2) -
                                                     observationHandler.getDesiredBaseLinearVelocity().col(0).head(
                                                             2)).squaredNorm()));
 
         // Base angular velocity
         r_baseAngularVelocityTracking_ +=
-                1.f - static_cast<float>(tanh(2 * std::pow(observationHandler.getBaseAngularVelocity()[2] -
+                1.f - static_cast<float>(tanh(4 * std::pow(observationHandler.getBaseAngularVelocity()[2] -
                                                            observationHandler.getDesiredBaseAngularVelocity()[2], 2.)));
 
         // Joint torque
@@ -250,10 +250,10 @@ public:
     }
 
     void reset() {
-        desiredJointPosition_ << -0.089, 0.712, -1.03,
-                0.089, 0.712, -1.03,
-                -0.089, -0.712, 1.03,
-                0.089, -0.712, 1.03;
+        desiredJointPosition_ << -0.20, 1.39, -1.70,
+                0.20, 1.39, -1.70,
+                -0.20, -1.39, 1.70,
+                0.20, -1.39, 1.70;
         feetStanceDuration_.fill(0.f);
 
         prevJointVelocity_.setZero();

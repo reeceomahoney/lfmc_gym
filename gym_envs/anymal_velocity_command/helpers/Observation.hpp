@@ -19,8 +19,7 @@ private:
 
     int observationDim_ = 48;
     int historyLength_ = 4, nJoints_ = 12;
-    // double nominalBaseHeight_ = 0.522;
-    double nominalBaseHeight_ = 0.39;
+    double nominalBaseHeight_ = 0.41;
 
     Eigen::VectorXd nominalGeneralizedCoordinates_;
 
@@ -32,20 +31,16 @@ public:
         jointPositionErrorHistory_.setZero(historyLength_ * nJoints_);
 
         jointNominalConfig_.setZero(nJoints_);
-        // jointNominalConfig_ << -0.089, 0.712, -1.03,
-        //         0.089, 0.712, -1.03,
-        //         -0.089, -0.712, 1.03,
-        //         0.089, -0.712, 1.03;
-        jointNominalConfig_ << -0.205, 1.464, -1.849,
-                0.205, 1.464, -1.849,
-                -0.205, -1.464, 1.849,
-                0.205, -1.464, 1.849;
+        jointNominalConfig_ << -0.20, 1.39, -1.70,
+                0.20, 1.39, -1.70,
+                -0.20, -1.39, 1.70,
+                0.20, -1.39, 1.70;
 
         feetNominalPositions_.setZero(12);
-        feetNominalPositions_ << 0.38, 0.27, -0.522,
-                0.38, -0.27, -0.522,
-                -0.38, 0.27, -0.522,
-                -0.38, -0.27, -0.522;
+        feetNominalPositions_ << 0.295, 0.235, -0.41,
+                -0.295, 0.235, -0.41,
+                0.295, -0.235, -0.41,
+                -0.295, -0.235, -0.41;
 
         generalizedCoordinate_.setZero(19);
         generalizedVelocity_.setZero(18);
