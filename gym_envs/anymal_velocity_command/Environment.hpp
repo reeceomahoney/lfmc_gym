@@ -146,7 +146,7 @@ namespace raisim {
             Eigen::VectorXd gc = gc_init_, gv = gv_init_;
 
             if (enableDynamicsRandomization_) {
-                gc[2] += 0.2 * std::abs(uniformRealDistribution_(gen_));
+                gc[2] += 0.05 * std::abs(uniformRealDistribution_(gen_));
 
                 gc.tail(12) +=
                         0.1 * Eigen::VectorXd::NullaryExpr(12, [&]() { return uniformRealDistribution_(gen_); });
