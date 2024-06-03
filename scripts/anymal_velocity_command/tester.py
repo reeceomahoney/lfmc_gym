@@ -36,7 +36,7 @@ task_path = home_path + "/gym_envs/" + task_name
 cfg = YAML().load(open(task_path + "/cfg.yaml", 'r'))
 
 # create environment from the configuration file
-cfg['environment']['num_envs'] = 1
+cfg['environment']['num_envs'] = 1000
 cfg['environment']['render'] = True
 cfg['environment']['server']['port'] = 8082
 
@@ -116,10 +116,10 @@ else:
                 "vel_cmds": np.zeros((num_envs, max_steps, 3))
     }
     tot_terminals = 0
-    action_mean = np.array([-0.205, 1.464, -1.849,
-        0.205, 1.464, -1.849,
-        -0.205, -1.464, 1.849,
-        0.205, -1.464, 1.849])
+    action_mean = np.array([-0.30, 1.90, -2.27,
+                0.30, 1.90, -2.27,
+                -0.30, -1.90, 2.27,
+                0.30, -1.90, 2.27])
 
     action_ll = np.zeros((num_envs, 12), dtype=np.float32)
     for step in tqdm(range(max_steps)):
