@@ -1,5 +1,5 @@
 from ruamel.yaml import YAML, dump, RoundTripDumper
-from raisim_gym_torch.env.bin import anymal_pmtg_velocity_command
+from raisim_gym_torch.env.bin import pmtg
 from raisim_gym_torch.env.RaisimGymVecEnv import RaisimGymVecEnv as VecEnv
 import os
 import math
@@ -31,7 +31,7 @@ def make_env():
     args = parser.parse_args()
 
     # directories
-    task_name = "anymal_pmtg_velocity_command"
+    task_name = "pmtg"
     home_path = os.path.realpath(
         os.path.dirname(os.path.realpath(__file__)) + "/../../"
     )
@@ -41,12 +41,12 @@ def make_env():
     cfg = YAML().load(open(task_path + "/cfg.yaml", "r"))
 
     # create environment from the configuration file
-    cfg['environment']['num_envs'] = 1
+    # cfg['environment']['num_envs'] = 1
     cfg["environment"]["render"] = True
     cfg["environment"]["server"]["port"] = 8081
 
     env = VecEnv(
-        anymal_pmtg_velocity_command.RaisimGymEnv(
+        pmtg.RaisimGymEnv(
             home_path + "/resources", dump(cfg["environment"], Dumper=RoundTripDumper)
         ),
         cfg["environment"],
@@ -67,7 +67,7 @@ torch.manual_seed(cfg["seed"])
 np.random.seed(cfg["seed"])
 
 actor_critic_module = modules.get_actor_critic_module_from_config(
-    cfg, env, anymal_pmtg_velocity_command.NormalSampler, device="cpu"
+    cfg, env, pmtg.NormalSampler, device="cpu"
 )
 
 # shortcuts

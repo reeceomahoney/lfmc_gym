@@ -11,8 +11,8 @@ import random
 
 from ruamel.yaml import YAML, dump, RoundTripDumper
 
-from raisim_gym_torch.env.bin.anymal_pmtg_velocity_command import RaisimGymEnv
-from raisim_gym_torch.env.bin.anymal_pmtg_velocity_command import NormalSampler
+from raisim_gym_torch.env.bin.pmtg import RaisimGymEnv
+from raisim_gym_torch.env.bin.pmtg import NormalSampler
 
 import modules
 

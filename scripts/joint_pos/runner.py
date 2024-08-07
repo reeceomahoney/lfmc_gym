@@ -13,8 +13,8 @@ import random
 
 from ruamel.yaml import YAML, dump, RoundTripDumper
 
-from raisim_gym_torch.env.bin.anymal_velocity_command import RaisimGymEnv
-from raisim_gym_torch.env.bin.anymal_velocity_command import NormalSampler
+from raisim_gym_torch.env.bin.joint_pos import RaisimGymEnv
+from raisim_gym_torch.env.bin.joint_pos import NormalSampler
 
 import modules
 
