@@ -161,9 +161,9 @@ else:
             obs_new_unnorm = (obs_new * np.sqrt(obs_var) + obs_mean)[:, :48]
             action = obs_new_unnorm[:, 36:48] + obs_new_unnorm[:, 3:15]
 
-            expert_data["observations"][:, step, :2] = base_pos[:, :2]
-            expert_data["observations"][:, step, 2:6] = orientation
-            expert_data["observations"][:, step, 6:36] = obs_unnorm[:, 3:33]
+            # expert_data["observations"][:, step, :2] = base_pos[:, :2]
+            # expert_data["observations"][:, step, 2:6] = orientation
+            expert_data["observations"][:, step, :36] = obs_unnorm[:, :36]
             expert_data["actions"][:, step] = action
             expert_data["terminals"][:, step] = dones.reshape(-1, 1)
             expert_data["vel_cmds"][:, step] = obs_unnorm[:, 33:36]
@@ -182,7 +182,7 @@ else:
     env.reset()
     print("Finished at the maximum visualization steps")
 
-    name = "expert_data"
+    name = "walk"
     np.save("expert_data/" + name + ".npy", expert_data)
     print(expert_data["observations"].shape)
     print("Number of terminals: ", tot_terminals)

@@ -36,9 +36,9 @@ task_path = home_path + "/gym_envs/" + task_name
 cfg = YAML().load(open(task_path + "/cfg.yaml", 'r'))
 
 # create environment from the configuration file
-cfg['environment']['num_envs'] = 1000
+# cfg['environment']['num_envs'] = 1
 cfg['environment']['render'] = True
-cfg['environment']['server']['port'] = 8082
+cfg['environment']['server']['port'] = 8081
 
 env = VecEnv(
     anymal_velocity_command.RaisimGymEnv(home_path + "/resources", dump(cfg['environment'], Dumper=RoundTripDumper)),
@@ -110,7 +110,7 @@ else:
 
     obs_mean, obs_var = env.mean, env.var
     num_envs = cfg['environment']['num_envs']
-    expert_data = {"observations": np.zeros((num_envs, max_steps, 36)),
+    expert_data = {"observations": np.zeros((num_envs, max_steps, 33)),
                 "actions": np.zeros((num_envs, max_steps, 12)),
                 "terminals": np.zeros((num_envs, max_steps, 1)),
                 "vel_cmds": np.zeros((num_envs, max_steps, 3))
@@ -130,15 +130,15 @@ else:
             base_pos = env.get_base_position()
             orientation = env.get_base_orientation()
 
-            prev_action_ll = actor_critic_module.generate_action(torch.from_numpy(obs).cpu())
+            prev_action_ll = 0.6*actor_critic_module.generate_action(torch.from_numpy(obs).cpu())
             reward_ll, dones = env.step(action_ll)
 
             actor_critic_module.update_dones(dones)
             reward_ll_sum = reward_ll_sum + reward_ll[0]
 
-            expert_data["observations"][:, step, :2] = base_pos[:, :2]
-            expert_data["observations"][:, step, 2:6] = orientation
-            expert_data["observations"][:, step, 6:36] = obs_unnorm[:, 3:33]
+            # expert_data["observations"][:, step, :2] = base_pos[:, :2]
+            # expert_data["observations"][:, step, 2:6] = orientation
+            expert_data["observations"][:, step, :33] = obs_unnorm[:, :33]
             expert_data["actions"][:, step, :] = prev_action_ll.cpu().detach().numpy() + action_mean
             expert_data["terminals"][:, step, :] = dones.reshape(-1, 1)
             expert_data["vel_cmds"][:, step] = obs_unnorm[:, 33:36]

@@ -285,12 +285,12 @@ namespace raisim {
             terminalReward = terminalRewardCoeff_;
 
             /// if the contact body is not feet
-            for (auto &contact: robot_->getContacts()) {
-                if (contact.getCollisionBodyA()->material != "foot_material" &&
-                    contact.getCollisionBodyB()->material != "foot_material") {
-                    return true;
-                }
-            }
+            // for (auto &contact: robot_->getContacts()) {
+            //     if (contact.getCollisionBodyA()->material != "foot_material" &&
+            //         contact.getCollisionBodyB()->material != "foot_material") {
+            //         return true;
+            //     }
+            // }
 
             terminalReward = 0.f;
             return false;
