@@ -43,8 +43,8 @@ environment:
     probability_constant_command: 0.9   # includes all three velocities
 
     # Time range in seconds when the next command is sampled
-    command_sampling_time_min: 3.0
-    command_sampling_time_max: 4.0
+    command_sampling_time_min: 8.0
+    command_sampling_time_max: 8.0
 
   reward:
     base_orientation:

@@ -110,7 +110,7 @@ else:
 
     obs_mean, obs_var = env.mean, env.var
     num_envs = cfg['environment']['num_envs']
-    expert_data = {"observations": np.zeros((num_envs, max_steps, 33)),
+    expert_data = {"observations": np.zeros((num_envs, max_steps, 36)),
                 "actions": np.zeros((num_envs, max_steps, 12)),
                 "terminals": np.zeros((num_envs, max_steps, 1)),
                 "vel_cmds": np.zeros((num_envs, max_steps, 3))
@@ -138,7 +138,7 @@ else:
 
             # expert_data["observations"][:, step, :2] = base_pos[:, :2]
             # expert_data["observations"][:, step, 2:6] = orientation
-            expert_data["observations"][:, step, :33] = obs_unnorm[:, :33]
+            expert_data["observations"][:, step, :36] = obs_unnorm[:, :36]
             expert_data["actions"][:, step, :] = prev_action_ll.cpu().detach().numpy() + action_mean
             expert_data["terminals"][:, step, :] = dones.reshape(-1, 1)
             expert_data["vel_cmds"][:, step] = obs_unnorm[:, 33:36]
