@@ -1,18 +1,18 @@
-from ruamel.yaml import YAML, dump, RoundTripDumper
-from raisim_gym_torch.env.bin import pmtg
-from raisim_gym_torch.env.RaisimGymVecEnv import RaisimGymVecEnv as VecEnv
-import os
-import math
-import time
-import torch
 import argparse
+import math
+import os
 import random
+import re
+import time
+
 import numpy as np
+import torch
+from ruamel.yaml import YAML, RoundTripDumper, dump
 from tqdm import tqdm
 
 import modules
-
-import re
+from raisim_gym_torch.env.bin import pmtg
+from raisim_gym_torch.env.RaisimGymVecEnv import RaisimGymVecEnv as VecEnv
 
 
 def natural_sort(l):
@@ -153,7 +153,9 @@ else:
             base_pos = env.get_base_position()
             orientation = env.get_base_orientation()
 
-            prev_action_ll = actor_critic_module.generate_action(torch.from_numpy(obs).cpu())
+            prev_action_ll = actor_critic_module.generate_action(
+                torch.from_numpy(obs).cpu()
+            )
             reward_ll, dones = env.step(action_ll)
             obs_new = env.observe(False).copy()
 
@@ -175,7 +177,7 @@ else:
                 tot_terminals += sum(dones)
 
                 actor_critic_module.reset()
-            
+
             action_ll = prev_action_ll.cpu().detach().numpy()
 
     env.turn_off_visualization()

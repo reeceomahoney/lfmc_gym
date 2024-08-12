@@ -1,18 +1,18 @@
-from ruamel.yaml import YAML, dump, RoundTripDumper
-from raisim_gym_torch.env.bin import joint_pos
-from raisim_gym_torch.env.RaisimGymVecEnv import RaisimGymVecEnv as VecEnv
-import os
-import math
-import time
-import torch
 import argparse
+import math
+import os
 import random
+import re
+import time
+
 import numpy as np
+import torch
+from ruamel.yaml import YAML, RoundTripDumper, dump
 from tqdm import tqdm
 
 import modules
-
-import re
+from raisim_gym_torch.env.bin import joint_pos
+from raisim_gym_torch.env.RaisimGymVecEnv import RaisimGymVecEnv as VecEnv
 
 
 def natural_sort(l):
