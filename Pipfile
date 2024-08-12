@@ -14,6 +14,7 @@ tqdm = "*"
 matplotlib = "*"
 protobuf = "==4.25"
 pybind11 = {extras = ["global"], version = "*"}
+lfmc-gym = {file = ".", editable = true}
 
 [dev-packages]
 
