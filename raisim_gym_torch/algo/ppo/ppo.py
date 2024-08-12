@@ -1,9 +1,11 @@
-from datetime import datetime
 import os
+from datetime import datetime
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.tensorboard import SummaryWriter
+import wandb
+
 from .storage import RolloutStorage
 
 
@@ -59,7 +61,6 @@ class PPO:
 
         # Log
         self.log_dir = os.path.join(log_dir, datetime.now().strftime('%b%d_%H-%M-%S'))
-        self.writer = SummaryWriter(log_dir=self.log_dir, flush_secs=10)
         self.tot_timesteps = 0
         self.tot_time = 0
 
@@ -117,10 +118,10 @@ class PPO:
     def log(self, variables):
         self.tot_timesteps += self.num_transitions_per_env * self.num_envs
         mean_std = self.actor_critic_module.distribution.std.mean()
-        self.writer.add_scalar('PPO/value_function', variables['mean_value_loss'], variables['it'])
-        self.writer.add_scalar('PPO/surrogate', variables['mean_surrogate_loss'], variables['it'])
-        self.writer.add_scalar('PPO/mean_noise_std', mean_std.item(), variables['it'])
-        self.writer.add_scalar('PPO/learning_rate', self.learning_rate, variables['it'])
+        wandb.log({'PPO/value_function': variables['mean_value_loss']}, step=variables['it'])
+        wandb.log({'PPO/surrogate': variables['mean_surrogate_loss']}, step=variables['it'])
+        wandb.log({'PPO/mean_noise_std': mean_std.item()}, step=variables['it'])
+        wandb.log({'PPO/learning_rate': self.learning_rate}, step=variables['it'])
 
     def _train_step(self, log_this_iteration, it):
         mean_value_loss = 0
@@ -183,12 +184,12 @@ class PPO:
 
                     loss = surrogate_loss + self.value_loss_coef * value_loss - self.entropy_coef * entropy_batch.mean()
 
-                    if hasattr(self.actor_critic_module, 'loss'):
-                        actor_critic_module_loss = self.actor_critic_module.loss(
-                            writer=self.writer if log_this_iteration and backward_count == 0 else None, it=it)
+                    # if hasattr(self.actor_critic_module, 'loss'):
+                    #     actor_critic_module_loss = self.actor_critic_module.loss(
+                    #         writer=self.writer if log_this_iteration and backward_count == 0 else None, it=it)
 
-                        if actor_critic_module_loss is not None:
-                            loss += actor_critic_module_loss
+                    #     if actor_critic_module_loss is not None:
+                    #         loss += actor_critic_module_loss
 
                     # Gradient step
                     self.optimizer.zero_grad()

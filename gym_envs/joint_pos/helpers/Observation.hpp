@@ -20,7 +20,8 @@ private:
     int observationDim_ = 48;
     int historyLength_ = 4, nJoints_ = 12;
     // double nominalBaseHeight_ = 0.286;
-    double nominalBaseHeight_ = 0.45;
+    double nominalBaseHeight_ = 0.35;
+    // double nominalBaseHeight_ = 0.45;
 
     Eigen::VectorXd nominalGeneralizedCoordinates_;
 
@@ -36,10 +37,14 @@ public:
         //         0.30, 1.90, -2.27,
         //         -0.30, -1.90, 2.27,
         //         0.30, -1.90, 2.27;
-        jointNominalConfig_ << -0.17, 1.25, -1.56,
-                0.17, 1.25, -1.56,
-                -0.17, -1.25, 1.56,
-                0.17, -1.25, 1.56;
+        // jointNominalConfig_ << -0.17, 1.25, -1.56,
+        //         0.17, 1.25, -1.56,
+        //         -0.17, -1.25, 1.56,
+        //         0.17, -1.25, 1.56;
+        jointNominalConfig_ << -0.06, 1.41, -1.88,
+                0.06, 1.41, -1.88,
+                -0.06, -1.41, 1.88,
+                0.06, -1.41, 1.88;
 
         feetNominalPositions_.setZero(12);
         feetNominalPositions_ << 0.31, 0.24, -0.29,

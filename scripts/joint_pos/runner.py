@@ -7,20 +7,23 @@ import time
 import numpy as np
 import psutil
 import torch
+import wandb
 from ruamel.yaml import YAML, RoundTripDumper, dump
 
 import modules
 import raisim_gym_torch.algo.ppo.ppo as PPO
 from raisim_gym_torch.env.bin.joint_pos import NormalSampler, RaisimGymEnv
 from raisim_gym_torch.env.RaisimGymVecEnv import RaisimGymVecEnv as VecEnv
-from raisim_gym_torch.helper.raisim_gym_helper import (ConfigurationSaver,
-                                                       RewardLogger,
-                                                       load_param)
+from raisim_gym_torch.helper.raisim_gym_helper import (
+    ConfigurationSaver,
+    RewardLogger,
+    load_param,
+)
 
 
 def main():
     # task specification
-    task_name = "anymal_velocity_command"
+    task_name = "joint_pos"
 
     # configuration
     parser = argparse.ArgumentParser()
@@ -82,7 +85,13 @@ def main():
         log_dir=home_path + "/data/" + task_name,
         save_items=[task_path + "/cfg.yaml", task_path + "/Environment.hpp"],
     )
-    # tensorboard_launcher(saver.data_dir)  # press refresh (F5) after the first ppo update
+
+    wandb.init(
+        project="lfmc",
+        entity="reeceomahoney",
+        config=cfg,
+        dir=saver.data_dir,
+    )
 
     # Discount factor
     rl_gamma = np.exp(
@@ -244,10 +253,14 @@ def main():
 
         # Add to tensorboard
         if log_this_iteration and not visualizable_iteration:
-            ppo.writer.add_scalar(
-                "Rewards/Episodic/average_ll", average_ll_performance, update
+            wandb.log(
+                {
+                    "Rewards/Episodic/average_ll": average_ll_performance,
+                    "dones": average_dones,
+                },
+                step=update,
             )
-            reward_logger.log_to_tensorboard(ppo.writer, update)
+            # reward_logger.log_to_tensorboard(ppo.writer, update)
 
         # Clear the episodic reward storage buffer
         reward_logger.episodic_reset()
