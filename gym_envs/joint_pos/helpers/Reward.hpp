@@ -47,10 +47,18 @@ public:
         feetFrames_[3] = "RH_shank_fixed_RH_FOOT";
 
         desiredJointPosition_.setZero(12);
-        desiredJointPosition_ << -0.30, 1.90, -2.27,
-                0.30, 1.90, -2.27,
-                -0.30, -1.90, 2.27,
-                0.30, -1.90, 2.27;
+        // desiredJointPosition_ << -0.30, 1.90, -2.27,
+        //         0.30, 1.90, -2.27,
+        //         -0.30, -1.90, 2.27,
+        //         0.30, -1.90, 2.27;
+        // desiredJointPosition_ << -0.17, 1.25, -1.56,
+        //         0.17, 1.25, -1.56,
+        //         -0.17, -1.25, 1.56,
+        //         0.17, -1.25, 1.56;
+        desiredJointPosition_ << -0.06, 1.41, -1.88,
+                0.06, 1.41, -1.88,
+                -0.06, -1.41, 1.88,
+                0.06, -1.41, 1.88;
 
         jointVelocity_.setZero(12);
         prevJointVelocity_.setZero(12);
@@ -250,10 +258,18 @@ public:
     }
 
     void reset() {
-        desiredJointPosition_ << -0.30, 1.90, -2.27,
-                0.30, 1.90, -2.27,
-                -0.30, -1.90, 2.27,
-                0.30, -1.90, 2.27;
+        // desiredJointPosition_ << -0.30, 1.90, -2.27,
+        //         0.30, 1.90, -2.27,
+        //         -0.30, -1.90, 2.27,
+        //         0.30, -1.90, 2.27;
+        // desiredJointPosition_ << -0.17, 1.25, -1.56,
+        //         0.17, 1.25, -1.56,
+        //         -0.17, -1.25, 1.56,
+        //         0.17, -1.25, 1.56;
+        desiredJointPosition_ << -0.06, 1.41, -1.88,
+                0.06, 1.41, -1.88,
+                -0.06, -1.41, 1.88,
+                0.06, -1.41, 1.88;
         feetStanceDuration_.fill(0.f);
 
         prevJointVelocity_.setZero();
