@@ -224,6 +224,11 @@ namespace raisim {
                 environments_[i]->getBaseOrientation(rot.row(i));
         }
 
+        void getGeneralizedForce(Eigen::Ref<EigenRowMajorMat> &force) {
+            for (int i = 0; i < num_envs_; i++)
+                environments_[i]->getGeneralizedForce(force.row(i));
+        }
+
     private:
         void updateObservationStatisticsAndNormalize(Eigen::Ref<EigenRowMajorMat> &ob, bool updateStatistics) {
             if (updateStatistics) {

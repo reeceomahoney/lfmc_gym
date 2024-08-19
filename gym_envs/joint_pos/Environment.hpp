@@ -61,6 +61,7 @@ namespace raisim {
             vTarget_.setZero(gvDim_);
             pTarget12_.setZero(nJoints_);
             prevPTarget12_.setZero(nJoints_);
+            gf_.setZero(gvDim_);
 
             /// this is nominal configuration of anymal_c
             gc_init_ = observationHandler_.getNominalGeneralizedCoordinates();
@@ -216,15 +217,14 @@ namespace raisim {
                 if (i % 2 == 0 && useActuatorNetwork_) {
                     robot_->getState(gc_, gv_);
 
-                    Eigen::VectorXd gf(gvDim_);
-                    gf.setZero();
+                    gf_.setZero();
 
-                    gf.tail(12) = actuationOutputTorqueScaling_ * actuation_.getActuationTorques(
+                    gf_.tail(12) = actuationOutputTorqueScaling_ * actuation_.getActuationTorques(
                             actuationPositionErrorInputScaling_ * (pTarget12_ - gc_.tail(12)),
                             actuationVelocityInputScaling_ * gv_.tail(12)
                     ).cwiseMax(-80.).cwiseMin(80.);
 
-                    robot_->setGeneralizedForce(gf);
+                    robot_->setGeneralizedForce(gf_);
                 } else if (!useActuatorNetwork_) {
                     robot_->setPdTarget(pTarget_, Eigen::VectorXd::Zero(gvDim_));
                 }
@@ -255,6 +255,10 @@ namespace raisim {
         void observe(Eigen::Ref<EigenVec> ob) final {
             /// convert it to float
             ob = observationHandler_.getObservation().cast<float>();
+        }
+
+        void getGeneralizedForce(Eigen::Ref<EigenVec> gf) {
+            gf = gf_.cast<float>();
         }
 
         void recordRewards() {
@@ -335,7 +339,7 @@ namespace raisim {
         int gcDim_, gvDim_, nJoints_;
         bool visualizable_ = false, visualizing_ = false;
         raisim::ArticulatedSystem *robot_;
-        Eigen::VectorXd gc_init_, gv_init_, gc_, gv_, pTarget_, pTarget12_, vTarget_, prevPTarget12_;
+        Eigen::VectorXd gc_init_, gv_init_, gc_, gv_, pTarget_, pTarget12_, vTarget_, prevPTarget12_, gf_;
         float terminalRewardCoeff_ = 0.f;
         Eigen::VectorXd actionMean_, actionStd_, obDouble_;
         Eigen::Vector3d bodyLinearVel_, bodyAngularVel_;
