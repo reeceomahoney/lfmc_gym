@@ -224,9 +224,9 @@ namespace raisim {
                 environments_[i]->getBaseOrientation(rot.row(i));
         }
 
-        void getGeneralizedForce(Eigen::Ref<EigenRowMajorMat> &force) {
+        void getTorques(Eigen::Ref<EigenRowMajorMat> &torques) {
             for (int i = 0; i < num_envs_; i++)
-                environments_[i]->getGeneralizedForce(force.row(i));
+                environments_[i]->getTorques(torques.row(i));
         }
 
     private:

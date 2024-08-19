@@ -105,10 +105,10 @@ class RaisimGymVecEnv:
         self.wrapper.getBaseOrientation(base_orientation)
         return base_orientation
     
-    def get_generalized_force(self):
-        generalized_force = np.zeros([self.num_envs, 6], dtype=np.float32)
-        self.wrapper.getGeneralizedForce(generalized_force)
-        return generalized_force
+    def get_torques(self):
+        torques = np.zeros([self.num_envs, 12], dtype=np.float32)
+        self.wrapper.getTorques(torques)
+        return torques
 
     @property
     def num_envs(self):
