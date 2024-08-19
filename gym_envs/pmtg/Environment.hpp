@@ -80,7 +80,7 @@ namespace raisim {
             pTarget_.setZero(gcDim_);
             vTarget_.setZero(gvDim_);
             pTarget12_.setZero(nJoints_);
-            torques_.setZero(nJoints_);
+            gf_.setZero(gvDim_);
 
             /// this is nominal configuration of anymal_c
             gc_init_ = observationHandler_.getNominalGeneralizedCoordinates();
@@ -246,14 +246,14 @@ namespace raisim {
                 if (i % int(0.005 / simulation_dt_ + 1e-10) == 0 && useActuatorNetwork_) {
                     robot_->getState(gc_, gv_);
 
-                    torques_.setZero();
+                    gf_.setZero();
 
-                    torques_.tail(12) = actuationOutputTorqueScaling_ * actuation_.getActuationTorques(
+                    gf_.tail(12) = actuationOutputTorqueScaling_ * actuation_.getActuationTorques(
                             actuationPositionErrorInputScaling_ * (pTarget12_ - gc_.tail(12)),
                             actuationVelocityInputScaling_ * gv_.tail(12)
                     ).cwiseMax(-80.).cwiseMin(80.);
 
-                    robot_->setGeneralizedForce(torques_);
+                    robot_->setGeneralizedForce(gf_);
                 } else if (!useActuatorNetwork_) {
                     robot_->setPdTarget(pTarget_, Eigen::VectorXd::Zero(gvDim_));
                 }
@@ -289,7 +289,7 @@ namespace raisim {
         }
 
         void getTorques(Eigen::Ref<EigenVec> torques) {
-            torques = torques_.cast<float>();
+            torques = gf_.tail(12).cast<float>();
         }
 
         void recordRewards() {
@@ -372,7 +372,7 @@ namespace raisim {
         int gcDim_, gvDim_, nJoints_;
         bool visualizable_ = false, visualizing_ = false;
         raisim::ArticulatedSystem *robot_;
-        Eigen::VectorXd gc_init_, gv_init_, gc_, gv_, pTarget_, pTarget12_, vTarget_, torques_;
+        Eigen::VectorXd gc_init_, gv_init_, gc_, gv_, pTarget_, pTarget12_, vTarget_, gf_;
         float terminalRewardCoeff_ = 0.f;
         Eigen::VectorXd obDouble_;
         Eigen::Vector3d bodyLinearVel_, bodyAngularVel_;
