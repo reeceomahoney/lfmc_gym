@@ -37,7 +37,7 @@ cfg = YAML().load(open(task_path + "/cfg.yaml", "r"))
 
 # create environment from the configuration file
 cfg["environment"]["render"] = True
-cfg["environment"]["server"]["port"] = 8080
+# cfg["environment"]["server"]["port"] = 8080
 
 env = VecEnv(
     joint_pos.RaisimGymEnv(
@@ -148,7 +148,7 @@ else:
     torques = np.zeros((num_envs, 12), dtype=np.float32)
     for step in tqdm(range(max_steps)):
         with torch.no_grad():
-            time.sleep(cfg["environment"]["control_dt"])
+            # time.sleep(cfg["environment"]["control_dt"])
             obs = env.observe(False)
             obs_unnorm = (obs * np.sqrt(obs_var) + obs_mean)[:, :36]
             base_pos = env.get_base_position()
@@ -166,7 +166,7 @@ else:
             # expert_data["observations"][:, step, 2:6] = orientation
             expert_data["observations"][:, step, :36] = obs_unnorm[:, :36]
             expert_data["actions"][:, step, :] = (
-                prev_action_ll.cpu().detach().numpy() + action_mean
+                0.5 * prev_action_ll.cpu().detach().numpy() + action_mean
             )
             expert_data["terminals"][:, step, :] = dones.reshape(-1, 1)
             expert_data["vel_cmds"][:, step] = obs_unnorm[:, 33:36]

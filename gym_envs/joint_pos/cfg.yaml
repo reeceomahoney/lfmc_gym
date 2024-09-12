@@ -14,12 +14,12 @@ environment:
   enable_dynamics_randomization: True
   episode_length_for_dynamics_learning: 2.0
 
-  action_scaling: 1.0
+  action_scaling: 0.5
 
   use_actuator_network: True
 
   server:
-    port: 8080
+    port: 8081
 
   velocity_command:
     limit_heading_velocity: 0.8

@@ -146,7 +146,7 @@ else:
     action_ll = np.zeros((num_envs, 12), dtype=np.float32)
     for step in tqdm(range(max_steps)):
         with torch.no_grad():
-            # time.sleep(cfg["environment"]["control_dt"])
+            time.sleep(cfg["environment"]["control_dt"])
             obs = env.observe(False).copy()
             obs_unnorm = (obs * np.sqrt(obs_var) + obs_mean)[:, :36]
             base_pos = env.get_base_position()
