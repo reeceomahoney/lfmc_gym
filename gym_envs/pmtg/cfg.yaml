@@ -1,12 +1,12 @@
 seed: 1
-record_video: True    # Is considered False if <environment.render> = False below
+record_video: True # Is considered False if <environment.render> = False below
 
 environment:
   render: False
   num_envs: 1000
   eval_every_n: 500
   save_every_n: 50
-  num_threads: 'auto'
+  num_threads: "auto"
   simulation_dt: 0.005
   control_dt: 0.04
   max_time: 8.0
@@ -40,7 +40,7 @@ environment:
     probability_lateral_command: 0.0
     probability_yaw_command: 0.0
     probability_direction_command: 0.0
-    probability_constant_command: 0.9   # includes all three velocities
+    probability_constant_command: 0.9 # includes all three velocities
 
     # Time range in seconds when the next command is sampled
     command_sampling_time_min: 8.0
@@ -85,27 +85,27 @@ environment:
       coeff: -2.25
 
   observation_indices:
-    rotation: [ 0, 3 ]
-    joint_position: [ 3, 15 ]
-    angular_velocity: [ 15, 18 ]
-    joint_velocity: [ 18, 30 ]
-    linear_velocity: [ 30, 33 ]
-    command: [ 33, 36 ]
-    joint_position_error: [ 36, 48 ]
-    previous_action: [ 48, 64 ]
-    feet_phase_sin: [ 64, 68 ]
-    feet_phase_cos: [ 68, 72 ]
+    rotation: [0, 3]
+    joint_position: [3, 15]
+    angular_velocity: [15, 18]
+    joint_velocity: [18, 30]
+    linear_velocity: [30, 33]
+    command: [33, 36]
+    joint_position_error: [36, 48]
+    previous_action: [48, 64]
+    feet_phase_sin: [64, 68]
+    feet_phase_cos: [68, 72]
 
-    positions: [ 0, 15 ]
-    velocities: [ 15, 33 ]
+    positions: [0, 15]
+    velocities: [15, 33]
 
-    actor_input: [ 0, 72 ]
-    critic_input: [ 0, 72 ]
+    actor_input: [0, 72]
+    critic_input: [0, 72]
 
-    recurrent_input: [ 0, 72 ]
+    recurrent_input: [0, 72]
 
-    dynamics_encoding_input: [ 0, 33 ]
-    dynamics_inference_output: [ 0, 33 ]
+    dynamics_encoding_input: [0, 33]
+    dynamics_inference_output: [0, 33]
 
     synchronous_estimation: None
 
@@ -114,17 +114,17 @@ environment:
     reward_advance_rate: 1.
 
 module:
-  type: 'dense'
+  type: "dense"
 
   actor:
     # Choose from ['tanh', 'leaky_relu', 'softsign']
-    activation: 'leaky_relu'
-    hidden: [ 512, 256, 128 ]
+    activation: "leaky_relu"
+    hidden: [512, 256, 128]
 
   critic:
     # Choose from ['tanh', 'leaky_relu', 'softsign']
-    activation: 'leaky_relu'
-    hidden: [ 512, 256, 128 ]
+    activation: "leaky_relu"
+    hidden: [512, 256, 128]
 
   properties:
     dense:
@@ -147,4 +147,4 @@ algorithm:
     min: 1e-4
     decay_steps: 20000
 
-    mode: 'decay'
+    mode: "decay"

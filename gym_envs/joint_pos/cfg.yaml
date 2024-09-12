@@ -1,15 +1,15 @@
 seed: 1
-record_video: True    # Is considered False if <environment.render> = False below
+record_video: True # Is considered False if <environment.render> = False below
 
 environment:
-  render: False  # Crashes when this is on
+  render: False # Crashes when this is on
   num_envs: 1000
   eval_every_n: 1000
   save_every_n: 50
-  num_threads: 'auto'
+  num_threads: "auto"
   simulation_dt: 0.0025
   control_dt: 0.04
-  max_time: 24.0
+  max_time: 8.0
   log_interval: 8
   enable_dynamics_randomization: True
   episode_length_for_dynamics_learning: 2.0
@@ -30,16 +30,16 @@ environment:
     limit_velocity_magnitude: 0.1
 
     # These values are rescaled if their sum is not equal to 1
-    probability_zero_command: 0.2
+    probability_zero_command: 0.1
     probability_heading_command: 0.0
     probability_lateral_command: 0.0
     probability_yaw_command: 0.0
     probability_direction_command: 0.0
-    probability_constant_command: 0.8   # includes all three velocities
+    probability_constant_command: 0.9 # includes all three velocities
 
     # Time range in seconds when the next command is sampled
-    command_sampling_time_min: 3.0
-    command_sampling_time_max: 4.0
+    command_sampling_time_min: 8.0
+    command_sampling_time_max: 8.0
 
   reward:
     base_orientation:
@@ -78,24 +78,24 @@ environment:
       coeff: -0.05
 
   observation_indices:
-    rotation: [ 0, 3 ]
-    joint_position: [ 3, 15 ]
-    angular_velocity: [ 15, 18 ]
-    joint_velocity: [ 18, 30 ]
-    linear_velocity: [ 30, 33 ]
+    rotation: [0, 3]
+    joint_position: [3, 15]
+    angular_velocity: [15, 18]
+    joint_velocity: [18, 30]
+    linear_velocity: [30, 33]
     command: [33, 36]
     joint_position_error: [36, 48]
 
-    positions: [ 0, 15 ]
-    velocities: [ 15, 33 ]
+    positions: [0, 15]
+    velocities: [15, 33]
 
-    actor_input: [ 0, 48 ]
-    critic_input: [ 0, 48 ]
+    actor_input: [0, 48]
+    critic_input: [0, 48]
 
     recurrent_input: [0, 48]
 
-    dynamics_encoding_input: [ 0, 33 ]
-    dynamics_inference_output: [ 0, 33 ]
+    dynamics_encoding_input: [0, 33]
+    dynamics_inference_output: [0, 33]
 
     synchronous_estimation: None
 
@@ -104,16 +104,16 @@ environment:
     reward_advance_rate: 1.0
 
 module:
-  type: 'dense'
+  type: "dense"
 
   actor:
     # Choose from ['tanh', 'leaky_relu', 'softsign']
-    activation: 'tanh'
+    activation: "tanh"
     hidden: [256, 256]
 
   critic:
     # Choose from ['tanh', 'leaky_relu', 'softsign']
-    activation: 'tanh'
+    activation: "tanh"
     hidden: [256, 256]
 
   properties:
@@ -137,4 +137,4 @@ algorithm:
     min: 5e-4
     decay_steps: 1
 
-    mode: 'constant'
+    mode: "constant"

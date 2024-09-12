@@ -266,13 +266,13 @@ namespace raisim {
             if (done[agentId] && earlyTerminationActive_) {
                 environments_[agentId]->reset();
                 reward[agentId] += terminalReward;
-            } else {
-                done[agentId] = false;
-            }
             // } else {
-            //     conditionalReset();
-            //     done[agentId] = conditionalResetPerformed_[agentId];
+            //     done[agentId] = false;
             // }
+            } else {
+                conditionalReset();
+                done[agentId] = conditionalResetPerformed_[agentId];
+            }
         }
 
         std::vector<ChildEnvironment *> environments_;
