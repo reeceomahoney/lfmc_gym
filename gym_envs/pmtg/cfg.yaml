@@ -68,7 +68,7 @@ environment:
     pronking:
       coeff: -3.5
     base_height:
-      coeff: -60.
+      coeff: -20.
     symmetry_z:
       coeff: -0.0
     feet_deviation:
