@@ -72,13 +72,13 @@ environment:
     symmetry_z:
       coeff: -0.0
     feet_deviation:
-      coeff: -0.2
+      coeff: -0.0
     trotting:
       coeff: 0.0
     joint_jerk:
       coeff: 0.0
     vertical_linear_velocity:
-      coeff: -4.0
+      coeff: -2.0
     horizontal_angular_velocity:
       coeff: -0.2
     feet_phase:
