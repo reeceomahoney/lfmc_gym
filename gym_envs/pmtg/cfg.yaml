@@ -68,7 +68,7 @@ environment:
     pronking:
       coeff: -3.5
     base_height:
-      coeff: -40.
+      coeff: -60.
     symmetry_z:
       coeff: -0.0
     feet_deviation:
@@ -78,7 +78,7 @@ environment:
     joint_jerk:
       coeff: 0.0
     vertical_linear_velocity:
-      coeff: -2.0
+      coeff: -4.0
     horizontal_angular_velocity:
       coeff: -0.2
     feet_phase:
