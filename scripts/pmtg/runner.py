@@ -255,7 +255,7 @@ def main():
         if log_this_iteration and not visualizable_iteration:
             wandb.log(
                 {
-                    "Rewards/Episodic/average_ll": average_ll_performance,
+                    "mean reward": average_ll_performance,
                     "dones": average_dones,
                 },
                 step=update,
