@@ -29,7 +29,7 @@ namespace raisim {
                 normalDistribution_(0, 1), uniformRealDistribution_(-1, 1),
                 actuation_(resourceDir + "/parameters/anymal_c_actuation", Eigen::Vector2d{1., 0.1}, 100., 12),
                 velocityCommandHandler_(cfg["velocity_command"], cfg["control_dt"].template As<double>()),
-                actionHandler_(1., 0.1, cfg["control_dt"].template As<double>(),
+                actionHandler_(1., 0.3, cfg["control_dt"].template As<double>(),
                                observationHandler_.getNominalFeetPositions()),
                 rewardHandler_(cfg["control_dt"].template As<float>(),
                                cfg["simulation_dt"].template As<float>()),
