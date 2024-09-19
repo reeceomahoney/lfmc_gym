@@ -260,7 +260,7 @@ def main():
                 },
                 step=update,
             )
-            # reward_logger.log_to_tensorboard(ppo.writer, update)
+            reward_logger.log_to_wandb(update)
 
         # Clear the episodic reward storage buffer
         reward_logger.episodic_reset()

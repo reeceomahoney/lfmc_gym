@@ -50,9 +50,9 @@ environment:
     base_orientation:
       coeff: -5.0
     base_linear_velocity_tracking:
-      coeff: 6.0
+      coeff: 3.0
     base_angular_velocity_tracking:
-      coeff: 3.5
+      coeff: 1.75
     joint_torque:
       coeff: -0.025
     joint_velocity:
