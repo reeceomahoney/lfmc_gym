@@ -72,7 +72,7 @@ environment:
     symmetry_z:
       coeff: -0.0
     feet_deviation:
-      coeff: -0.2
+      coeff: -0.02
     trotting:
       coeff: 0.0
     joint_jerk:
