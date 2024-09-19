@@ -43,10 +43,10 @@ public:
                 0.17, -1.25, 1.56;
 
         feetNominalPositions_.setZero(12);
-        feetNominalPositions_ << 0.308, 0.227, -0.59,
-            0.308, -0.227, -0.59,
-            -0.308, 0.227, -0.59,
-            -0.308, -0.227, -0.59;
+        feetNominalPositions_ << 0.308, 0.227, -0.40,
+            0.308, -0.227, -0.40,
+            -0.308, 0.227, -0.40,
+            -0.308, -0.227, -0.40;
                 
 
         generalizedCoordinate_.setZero(19);

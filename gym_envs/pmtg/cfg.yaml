@@ -62,13 +62,13 @@ environment:
     action_smoothness:
       coeff: -0.05
     feet_clearance:
-      coeff: 0
+      coeff: 2.5
     feet_slip:
       coeff: -0.5
     pronking:
       coeff: -3.5
     base_height:
-      coeff: -60.
+      coeff: -20.
     symmetry_z:
       coeff: -0.0
     feet_deviation:
