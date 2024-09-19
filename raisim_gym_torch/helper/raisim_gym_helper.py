@@ -100,8 +100,16 @@ class RewardLogger:
 
         # writer.add_scalars('Rewards/Episodic/mean', self._reward_mean_dict, it)
         # writer.add_scalars('Rewards/Episodic/std', self._reward_std_dict, it)
-        wandb.log(self._reward_mean_dict, step=it)
-        wandb.log(self._reward_std_dict, step=it)
+        log_means = {
+            "Reward_means/" + term: self._reward_mean_dict[term]
+            for term in self._reward_terms
+        }
+        log_stds = {
+            "Reward_stds/" + term: self._reward_std_dict[term]
+            for term in self._reward_terms
+        }
+        wandb.log(log_means, step=it)
+        wandb.log(log_stds, step=it)
 
         # if self._episodic_reset_count > 0:
         #     writer.add_scalars(
