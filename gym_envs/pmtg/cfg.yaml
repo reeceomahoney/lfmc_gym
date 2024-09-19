@@ -62,7 +62,7 @@ environment:
     action_smoothness:
       coeff: -0.05
     feet_clearance:
-      coeff: 2.5
+      coeff: 0
     feet_slip:
       coeff: -0.5
     pronking:
